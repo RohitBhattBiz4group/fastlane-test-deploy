@@ -23,6 +23,7 @@ jobs:
         with:
           ruby-version: "3.2"
           bundler-cache: true
+          working-directory: ios
 
       - name: Install Pods
         run: bundle exec pod install
