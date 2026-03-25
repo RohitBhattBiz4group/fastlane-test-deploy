@@ -167,6 +167,7 @@ ios/fastlane/Preview.html
 
 .bundle/
 vendor/bundle/
+ios/vendor/
 *.gem
 
 AuthKey_*.p8

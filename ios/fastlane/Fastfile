@@ -8,12 +8,6 @@ platform :ios do
       key_filepath: File.expand_path("../../AuthKey_GGY24CMB45.p8", __dir__)
     )
 
-    match(
-      type: "appstore",
-      readonly: true,
-      api_key: api_key
-    )
-
     increment_version_number(
       version_number: "1.0",
       xcodeproj: "FastlaneTestDeploy.xcodeproj"
