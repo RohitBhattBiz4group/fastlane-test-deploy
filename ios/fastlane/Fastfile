@@ -24,7 +24,7 @@ platform :ios do
       team_id: "35R36WPCZ4",
       bundle_identifier: "com.biz4.fastlane.testing",
       code_sign_identity: "iPhone Distribution",
-      profile_name: "Biz4_Ci_CD_testing_fastlane"
+      profile_name: "Biz4 Ci CD testing fastlane"
     )
 
     build_app(
@@ -35,7 +35,7 @@ platform :ios do
       export_options: {
         signingStyle: "manual",
         provisioningProfiles: {
-          "com.biz4.fastlane.testing" => "Biz4_Ci_CD_testing_fastlane"
+          "com.biz4.fastlane.testing" => "Biz4 Ci CD testing fastlane"
         }
       }
     )
