@@ -1,38 +1,29 @@
-name: iOS - Deploy to TestFlight (develop)
-
-on:
-  push:
-    branches:
-      - develop
-
-concurrency:
-  group: ios-testflight-develop
-  cancel-in-progress: true
+@ -11,7 +11,7 @@ concurrency:
 
 jobs:
-  build_    runs-on: macos-15
+  build_and_deploy:
+    runs-on: macos-latest
+    runs-on: macos-15
     timeout-minutes: 60
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+@ -23,6 +23,7 @@ jobs:
         with:
-          ruby-version: "3.3"
+          ruby-version: "3.2"
           bundler-cache: true
           working-directory: ios
 
       - name: Install Pods
         run: bundle exec pod install
-        working-directory: ios
-
+@ -31,9 +32,15 @@ jobs:
       - name: Create App Store Connect API Key file
         env:
           APP_STORE_CONNECT_API_KEY_P8: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8 }}
+        run: |
+          echo "$APP_STORE_CONNECT_API_KEY_P8" > AuthKey_GGY24CMB45.p8
         run: echo "$APP_STORE_CONNECT_API_KEY_P8" > AuthKey_GGY24CMB45.p8
 
+      - name: Build & Upload to TestFlight (Fastlane)
       - name: Build & Upload to TestFlight
         run: bundle exec fastlane beta
         working-directory: ios
@@ -43,5 +34,3 @@ jobs:
       - name: Clean up secrets
         if: always()
         run: rm -f AuthKey_GGY24CMB45.p8
- beta
-        working-directory: ios
