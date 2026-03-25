@@ -1,0 +1,39 @@
+name: iOS - Deploy to TestFlight (develop)
+
+on:
+  push:
+    branches:
+      - develop
+
+concurrency:
+  group: ios-testflight-develop
+  cancel-in-progress: true
+
+jobs:
+  build_and_deploy:
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Install Pods
+        run: bundle exec pod install
+        working-directory: ios
+
+      - name: Create App Store Connect API Key file
+        env:
+          APP_STORE_CONNECT_API_KEY_P8: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8 }}
+        run: |
+          echo "$APP_STORE_CONNECT_API_KEY_P8" > AuthKey_GGY24CMB45.p8
+
+      - name: Build & Upload to TestFlight (Fastlane)
+        run: bundle exec fastlane beta
+        working-directory: ios
