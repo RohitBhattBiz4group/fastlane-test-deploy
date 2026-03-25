@@ -44,9 +44,14 @@ jobs:
         run: |
           echo "$APP_STORE_CONNECT_API_KEY_P8" > AuthKey_GGY24CMB45.p8
 
+      - name: Configure git credentials for match
+        env:
+          MATCH_GIT_PAT: ${{ secrets.MATCH_GIT_PAT }}
+        run: |
+          git config --global url."https://x-access-token:${MATCH_GIT_PAT}@github.com/".insteadOf "https://github.com/"
+
       - name: Build & Upload to TestFlight (Fastlane)
         env:
-          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         run: bundle exec fastlane beta
         working-directory: ios
