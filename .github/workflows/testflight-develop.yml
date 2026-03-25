@@ -25,6 +25,10 @@ jobs:
           bundler-cache: true
           working-directory: ios
 
+      - name: Bundle Install
+        run: bundle install
+        working-directory: ios
+
       - name: Install Pods
         run: bundle exec pod install
         working-directory: ios
