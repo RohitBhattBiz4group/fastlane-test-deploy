@@ -231,9 +231,12 @@ GEM
 
 PLATFORMS
   arm64-darwin-23
+  arm64-darwin-24
+  ruby
+  x64-mingw-ucrt
 
 DEPENDENCIES
   fastlane
 
 BUNDLED WITH
-   2.4.10
+   2.6.9
