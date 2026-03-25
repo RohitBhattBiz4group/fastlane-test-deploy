@@ -23,7 +23,7 @@ platform :ios do
       path: "FastlaneTestDeploy.xcodeproj",
       team_id: "35R36WPCZ4",
       bundle_identifier: "com.biz4.fastlane.testing",
-      code_sign_identity: "Apple Distribution",
+      code_sign_identity: "iOS Distribution",
       profile_name: "Biz4 Ci CD testing fastlane"
     )
 
