@@ -5,14 +5,9 @@ on:
     branches:
       - develop
 
-concurrency:
-  group: ios-testflight-develop
-  cancel-in-progress: true
-
 jobs:
   build_and_deploy:
     runs-on: macos-15
-    timeout-minutes: 60
 
     steps:
       - name: Checkout
@@ -25,10 +20,6 @@ jobs:
           bundler-cache: true
           working-directory: ios
 
-      - name: Bundle Install
-        run: bundle install
-        working-directory: ios
-
       - name: Install Pods
         run: bundle exec pod install
         working-directory: ios
@@ -36,15 +27,17 @@ jobs:
       - name: Create App Store Connect API Key file
         env:
           APP_STORE_CONNECT_API_KEY_P8: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8 }}
-        run: echo "$APP_STORE_CONNECT_API_KEY_P8" > AuthKey_GGY24CMB45.p8
+        run: echo "$APP_STORE_CONNECT_API_KEY_P8" > ios/AuthKey.p8
 
       - name: Build & Upload to TestFlight
         run: bundle exec fastlane beta
         working-directory: ios
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          MATCH_GIT_BASIC_AUTH: ${{ secrets.MATCH_GIT_BASIC_AUTH }}
+          KEY_ID: ${{ secrets.KEY_ID }}
+          ISSUER_ID: ${{ secrets.ISSUER_ID }}
 
       - name: Clean up secrets
         if: always()
-        run: rm -f AuthKey_GGY24CMB45.p8
+        run: rm -f ios/AuthKey.p8
