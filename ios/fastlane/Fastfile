@@ -35,7 +35,7 @@ platform :ios do
       export_options: {
         signingStyle: "manual",
         provisioningProfiles: {
-          "com.biz4.fastlane.testing" => "Biz4 Ci CD testing fastlane"
+          "com.biz4.fastlane.testing" => "Biz4 Ci CD testing fastlane testing"
         }
       }
     )
