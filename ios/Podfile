@@ -17,15 +17,10 @@ end
 target 'FastlaneTestDeploy' do
   config = use_native_modules!
 
-  # Force disable Hermes
-  ENV['USE_HERMES'] = '0'
-  ENV['HERMES_ENABLED'] = 'false'
-
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/..",
-    :hermes_enabled => false
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
   post_install do |installer|
@@ -36,17 +31,7 @@ target 'FastlaneTestDeploy' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
-
-    # Remove hermes-engine target and its build phases to prevent script errors
-    installer.pods_project.targets.each do |target|
-      if target.name == 'hermes-engine'
-        # Remove all shell script build phases from hermes-engine
-        target.shell_script_build_phases.each do |phase|
-          target.build_phases.delete(phase)
-        end
-      end
-    end
-
+    
     # Avoid `ios/Pods/RCT-Folly/folly/Expected.h:1587:10: 'folly/coro/Coroutine.h' file not found"`
     # This flag disables the use of coroutines in Folly, which are causing the build issue.
     installer.pods_project.build_configurations.each do |config|
