@@ -37,21 +37,8 @@ jobs:
       - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
-      - name: Upgrade CocoaPods
-        run: |
-          sudo gem install cocoapods -v 1.16.2
-          pod --version
-        continue-on-error: false
-
-      - name: Clean Pods cache
-        run: |
-          rm -rf Pods Podfile.lock
-          pod cache clean --all
-        working-directory: ios
-        continue-on-error: true
-
       - name: Install Pods
-        run: pod install
+        run: bundle exec pod install
         working-directory: ios
 
       - name: Create App Store Connect API Key file

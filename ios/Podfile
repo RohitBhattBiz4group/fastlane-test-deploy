@@ -31,7 +31,7 @@ target 'FastlaneTestDeploy' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
-    
+
     # Avoid `ios/Pods/RCT-Folly/folly/Expected.h:1587:10: 'folly/coro/Coroutine.h' file not found"`
     # This flag disables the use of coroutines in Folly, which are causing the build issue.
     installer.pods_project.build_configurations.each do |config|
