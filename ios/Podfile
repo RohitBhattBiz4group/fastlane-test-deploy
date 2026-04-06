@@ -38,5 +38,16 @@ target 'FastlaneTestDeploy' do
       config.build_settings['OTHER_CPLUSPLUSFLAGS'] ||= ['$(OTHER_CFLAGS)']
       config.build_settings['OTHER_CPLUSPLUSFLAGS'] << '-DFOLLY_CFG_NO_COROUTINES=1'
     end
+
+    # Fix Hermes script phase to prevent archive failures
+    installer.pods_project.targets.each do |target|
+      if target.name == 'hermes-engine'
+        target.shell_script_build_phases.each do |phase|
+          if phase.name&.include?('[CP-User] [Hermes] Replace Hermes')
+            phase.always_out_of_date = true
+          end
+        end
+      end
+    end
   end
 end
